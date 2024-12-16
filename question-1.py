@@ -1,13 +1,5 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-cities = ['Addis Ababa', 'Bahir Dar', 'Gondar', 'Hawassa', 'Mekelle']
-roads = {
-'Addis Ababa': [('Bahir Dar', 510), ('Hawassa', 275)],
-'Bahir Dar': [('Addis Ababa', 510), ('Gondar', 180)],
-'Gondar': [('Bahir Dar', 180), ('Mekelle', 300)],
-'Hawassa': [('Addis Ababa', 275)],
-'Mekelle': [('Gondar', 300)]
-}
 
 def build_networkxGraph(roads):
     netGraph = nx.DiGraph()
@@ -28,6 +20,14 @@ def main(graph):
     visualize_graph(netGraph)
 
 if __name__ == '__main__':
+    cities = ['Addis Ababa', 'Bahir Dar', 'Gondar', 'Hawassa', 'Mekelle']
+    roads = {
+    'Addis Ababa': [('Bahir Dar', 510), ('Hawassa', 275)],
+    'Bahir Dar': [('Addis Ababa', 510), ('Gondar', 180)],
+    'Gondar': [('Bahir Dar', 180), ('Mekelle', 300)],
+    'Hawassa': [('Addis Ababa', 275)],
+    'Mekelle': [('Gondar', 300)]
+    }
     main(roads)
 
 
