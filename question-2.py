@@ -1,19 +1,33 @@
 from typing import Dict
-def depth_first_search(graph:Dict,start_node, end_node):
+def uninformed_path_finder(roads:Dict,start_node, end_node,strategy:str):
     '''
-
+    Parameters:
+        - cities: List of city names.
+        - roads: Dictionary with city connections as {city:
+        [(connected_city, distance)]}.
+        - start_city: The city to start the journey.
+        - goal_city: The destination city (for specific tasks).
+        - strategy: The uninformed search strategy to use ('bfs' or
+        'dfs').
+    Returns:
+        - path: List of cities representing the path from start_city to
+        goal_city.
+        - cost: Total cost (number of steps or distance) of the path.
     '''
-    if not(start_node in graph and end_node in graph):
+    if not(start_node in roads and end_node in roads):
         return []
-    stack = [(start_node,[start_node])]
+    stack = [(start_node,[start_node],0)]
     while stack:
-        curr_node,path = stack.pop()
+        if strategy == 'dfs':
+            curr_node,path,cost = stack.pop()
+        else:
+            curr_node,path,cost = stack.pop(0)
         if curr_node == end_node:
-            return path
-        for i in graph[curr_node]:
+            return path,cost
+        for i in roads[curr_node]:
             if i[0] not in path:
-                stack.append((i[0],path+[i[0]]))
-    return []
+                stack.append((i[0],path+[i[0]], cost + i[1]))
+    return ([],-1)
 
 roads2 = {
     'Arad': [('Zerind', 75), ('Sibiu', 140), ('Timisoara', 118)],
@@ -37,6 +51,7 @@ roads2 = {
     'Iasi': [('Vaslui', 92), ('Neamt', 87)],
     'Neamt': [('Iasi', 87)]
     }
-print(depth_first_search(roads2,'Arad','Sibiu'))
+print(uninformed_path_finder(roads2,'Arad','Sibiu','dfs'))
+print(uninformed_path_finder(roads2,'Arad', 'Sibiu','bfs'))
 
 

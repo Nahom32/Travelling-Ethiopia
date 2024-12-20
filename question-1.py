@@ -1,6 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
+
 def build_networkxGraph(roads):
     netGraph = nx.DiGraph()
     for city,neighbors in roads.items():
