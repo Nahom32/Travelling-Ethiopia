@@ -43,6 +43,7 @@ def weighted_path_finder(roads, curr_node,end_node):
     shortest_table = {node: float('inf') for node in roads}
     parent_tracker = {node: '' for node in roads}
     heapq.heappush(priority_queue, (0,curr_node))
+    cost = 0
     shortest_table[curr_node] = 0
     while priority_queue:
         path, curr_node = heapq.heappop(priority_queue)
@@ -56,18 +57,19 @@ def weighted_path_finder(roads, curr_node,end_node):
                     parent_tracker[neighbor] = curr_node
                     heapq.heappush(priority_queue, (distance, neighbor))
     if curr_node == end_node:
-        return reconstruct_path(parent_tracker,start_node,end_node)
+        return reconstruct_path(parent_tracker,shortest_table,start_node,end_node)
     else:
-        return []
+        return [],0
 
-def reconstruct_path(dependency_graph,start_node,end_node):
+def reconstruct_path(dependency_graph,shortest_table,start_node,end_node):
     path = []
+    cost = 0
     while start_node != end_node:
         path.insert(0, end_node)
-        print(path)
+        cost+=shortest_table[end_node]
         end_node = dependency_graph[end_node]
     path.insert(0, start_node)
-    return path
+    return path,cost
 
 roads2 = {
     'Arad': [('Zerind', 75), ('Sibiu', 140), ('Timisoara', 118)],
