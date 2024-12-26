@@ -37,6 +37,7 @@ def weighted_path_finder(roads, curr_node,end_node):
             - end_node: the destination node that the agent wants to go to.
         return:
             - A list containing the path that is traversed.
+            - A cost that it takes to traverse the route.
     '''
     priority_queue = []
     start_node = curr_node
