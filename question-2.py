@@ -39,6 +39,7 @@ def weighted_path_finder(roads, curr_node,end_node):
             - A list containing the path that is traversed.
     '''
     priority_queue = []
+    start_node = curr_node
     shortest_table = {node: float('inf') for node in roads}
     parent_tracker = {node: '' for node in roads}
     heapq.heappush(priority_queue, (0,curr_node))
@@ -47,24 +48,25 @@ def weighted_path_finder(roads, curr_node,end_node):
         path, curr_node = heapq.heappop(priority_queue)
         if curr_node == end_node:
             break
-        if shortest_table[curr_node] > path:
-             for neighbor, weight in roads[curr_node].items():
+        if shortest_table[curr_node] >= path:
+             for neighbor, weight in roads[curr_node]:
                 distance = path + weight
                 if distance < shortest_table[neighbor]:
                     shortest_table[neighbor] = distance
                     parent_tracker[neighbor] = curr_node
                     heapq.heappush(priority_queue, (distance, neighbor))
     if curr_node == end_node:
-        return reconstruct_path(parent_tracker,curr_node)
+        return reconstruct_path(parent_tracker,start_node,end_node)
     else:
         return []
 
-def reconstruct_path(dependency_graph,node_name,end_node):
+def reconstruct_path(dependency_graph,start_node,end_node):
     path = []
-    while node_name != end_node:
-        path.insert(0, node_name)
+    while start_node != end_node:
+        path.insert(0, end_node)
         print(path)
-        node_name = dependency_graph[node_name]
+        end_node = dependency_graph[end_node]
+    path.insert(0, start_node)
     return path
 
 roads2 = {
