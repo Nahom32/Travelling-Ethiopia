@@ -1,4 +1,5 @@
 from typing import Dict
+import heapq
 def uninformed_path_finder(roads:Dict,start_node, end_node,strategy:str):
     '''
     Parameters:
@@ -28,6 +29,43 @@ def uninformed_path_finder(roads:Dict,start_node, end_node,strategy:str):
             if i[0] not in path:
                 stack.append((i[0],path+[i[0]], cost + i[1]))
     return ([],-1)
+def weighted_path_finder(roads, curr_node,end_node):
+    '''
+        Parameters:
+            - roads: a dictionary that can be used as a graph
+            - curr_node: the start node that can be used as an initial node
+            - end_node: the destination node that the agent wants to go to.
+        return:
+            - A list containing the path that is traversed.
+    '''
+    priority_queue = []
+    shortest_table = {node: float('inf') for node in roads}
+    parent_tracker = {node: '' for node in roads}
+    heapq.heappush(priority_queue, (0,curr_node))
+    shortest_table[curr_node] = 0
+    while priority_queue:
+        path, curr_node = heapq.heappop(priority_queue)
+        if curr_node == end_node:
+            break
+        if shortest_table[curr_node] > path:
+             for neighbor, weight in roads[curr_node].items():
+                distance = path + weight
+                if distance < shortest_table[neighbor]:
+                    shortest_table[neighbor] = distance
+                    parent_tracker[neighbor] = curr_node
+                    heapq.heappush(priority_queue, (distance, neighbor))
+    if curr_node == end_node:
+        return reconstruct_path(parent_tracker,curr_node)
+    else:
+        return []
+
+def reconstruct_path(dependency_graph,node_name,end_node):
+    path = []
+    while node_name != end_node:
+        path.insert(0, node_name)
+        print(path)
+        node_name = dependency_graph[node_name]
+    return path
 
 roads2 = {
     'Arad': [('Zerind', 75), ('Sibiu', 140), ('Timisoara', 118)],
@@ -51,7 +89,7 @@ roads2 = {
     'Iasi': [('Vaslui', 92), ('Neamt', 87)],
     'Neamt': [('Iasi', 87)]
     }
+
 print(uninformed_path_finder(roads2,'Arad','Sibiu','dfs'))
 print(uninformed_path_finder(roads2,'Arad', 'Sibiu','bfs'))
-
-
+print(weighted_path_finder(roads2, 'Arad', 'Sibiu'))
